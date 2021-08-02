@@ -52,6 +52,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SG_Flooring.Data\SG_Flooring.Data.csproj">
+      <Project>{09C8DA80-E592-4354-9E00-CAD9790718AB}</Project>
+      <Name>SG_Flooring.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

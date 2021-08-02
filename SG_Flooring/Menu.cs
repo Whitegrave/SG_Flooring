@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SG_Flooring.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,9 @@ namespace SG_Flooring.UI
 
         public static void Start()
         {
-            // init hard file repository
-            //FileAccountRepository.InitializeFileRepo();
+            // Instantiate and initialize product database
+            ProductRepo ProdRepo = new ProductRepo();
+            ProdRepo.InitializeProductRepo();
 
             while (true)
             {
