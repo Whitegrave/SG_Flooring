@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SG_Flooring.Models.Responses
 {
-    public class GetOrderResponse : Response
+    public class CheckDateResponse : Response
     {
-        public Order Order { get; set; }
+        public string Date { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SG_Flooring.Models;
 using SG_Flooring.Models.Interfaces;
+using SG_Flooring.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace SG_Flooring.Data
         }
 
         public void SaveOrder(Order saveMe)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CheckDateResponse CheckDate(string date)
         {
             throw new NotImplementedException();
         }

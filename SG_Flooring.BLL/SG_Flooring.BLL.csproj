@@ -46,5 +46,11 @@
     <Compile Include="OrderManagerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SG_Flooring.Models\SG_Flooring.Models.csproj">
+      <Project>{534E8BEC-CC21-4AA6-8366-DB182AD82B96}</Project>
+      <Name>SG_Flooring.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
