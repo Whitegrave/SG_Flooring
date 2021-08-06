@@ -17,21 +17,12 @@ namespace SG_Flooring.BLL
             _orderRepository = orderRepository;
         }
 
-        public GetOrderResponse GetOrder(string orderDate, int orderNumber)
+        public GetOrderResponse LookupOrder(string orderDate, int orderNumber)
         {
             GetOrderResponse response = new GetOrderResponse();
 
-            // Determine if provided date is valid
-            CheckDateResponse dateReponse = _orderRepository.CheckDate(orderDate);
-            if (!dateReponse.Success)
-            {
-                response.Success = false;
-                response.Message = dateReponse.Message;
-                return response;
-            }
-
             // Check if order provided exists in file
-            response.Order = _orderRepository.GetOrder(dateReponse.Date.ToString(), orderNumber);
+            response.Order = _orderRepository.GetOrder(orderDate, orderNumber);
 
             if (response.Order == null)
             {
@@ -45,6 +36,13 @@ namespace SG_Flooring.BLL
             }
 
             return response;
+        }
+
+        // Passhtrough method to allow workflow to check date entry without reaching into repo/data
+        public CheckDateResponse ValidateDate(string orderDate)
+        {
+            CheckDateResponse response = new CheckDateResponse();
+            return _orderRepository.CheckDate(orderDate);
         }
 
         //public AccountDepositResponse Deposit(string accountNumber, decimal amount)

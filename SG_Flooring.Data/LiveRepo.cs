@@ -44,9 +44,9 @@ namespace SG_Flooring.Data
         {
             CheckDateResponse response = new CheckDateResponse();
             DateTime dateOut;
-            
-            // Convert string to desired Date format, store
-            bool dateSuccess = DateTime.TryParseExact(date, "d/m/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateOut);
+
+            // Attempt to parse string into date
+            bool dateSuccess = DateTime.TryParse(date, out dateOut);
 
             // If conversion failed, return false/msg
             if (!dateSuccess)
@@ -57,17 +57,36 @@ namespace SG_Flooring.Data
                 return response;
             }
 
+            // Date provided was valid. Convert string to consistent format, store
+            response.Date = dateOut.ToString("MM/dd/yyyy");
+            response.Success = true;
+            response.Message = "Date provided was valid";
+
+            return response;
+        }
+
+        public CheckDateResponse CheckFileForDate(string date)
+        {
+            CheckDateResponse response = new CheckDateResponse();
+            CheckDateResponse validDateResponse = new CheckDateResponse();
+
+            validDateResponse = CheckDate(date);      
+
+            // Return if invalid date
+            if (!validDateResponse.Success)
+                return validDateResponse;
+
             // Check for file with matching date parameter
-            if (!File.Exists(@".\" + dateOut.ToString()))
+            if (!File.Exists(@".\" + validDateResponse.Date.ToString()))
             {
                 response.Date = "invalid";
                 response.Success = false;
-                response.Message = $"No orders found for date {dateOut}.";
+                response.Message = $"No orders found for date {validDateResponse.Date}.";
                 return response;
             }
 
             // Date provided was valid and a file matching its date exists
-            response.Date = dateOut.ToString();
+            response.Date = validDateResponse.Date.ToString();
             response.Success = true;
             response.Message = "Date provided was valid and file found";
 
@@ -77,7 +96,7 @@ namespace SG_Flooring.Data
         private List<Order> GetOrdersFromFile(string date)
         {
             // Get account data
-            string[] rows = File.ReadAllLines(@".\" + date);
+            string[] rows = File.ReadAllLines(@".\Orders_" + date.Replace("/", "") + ".txt");
             // Remove header row
             rows = rows.Skip(0).ToArray();
 

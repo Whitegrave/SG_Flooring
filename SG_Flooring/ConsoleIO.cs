@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SG_Flooring.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -116,6 +117,20 @@ namespace SG_Flooring.UI
 
             if (ClearLog)
                 Console.Clear();
+        }
+
+        public static void DisplayOrderDetails(Order order)
+        {
+            Console.WriteLine("**************************************\n" +
+                             $"Order: {order.Number}" + " | " + $"{order.Date}\n" +
+                             $"Customer: {order.Customer}\n" +
+                             $"State: {order.State}\n" +
+                             $"Product: {order.Product}\n" +
+                             $"Material Cost: ${order.MaterialCostPSqf}\n" +
+                             $"Labor Cost: ${order.LaborTotal}\n" +
+                             $"Tax Total: ${order.TaxTotal}\n" +
+                             $"Total: ${order.Total}\n" +
+                              "**************************************");
         }
     }
 }

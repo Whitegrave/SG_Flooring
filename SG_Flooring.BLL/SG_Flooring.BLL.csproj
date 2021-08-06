@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SG_Flooring.Data\SG_Flooring.Data.csproj">
+      <Project>{09C8DA80-E592-4354-9E00-CAD9790718AB}</Project>
+      <Name>SG_Flooring.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SG_Flooring.Models\SG_Flooring.Models.csproj">
       <Project>{534E8BEC-CC21-4AA6-8366-DB182AD82B96}</Project>
       <Name>SG_Flooring.Models</Name>

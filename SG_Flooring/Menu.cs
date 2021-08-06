@@ -1,4 +1,5 @@
 ﻿using SG_Flooring.Data;
+using SG_Flooring.Workflows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,8 @@ namespace SG_Flooring.UI
                 switch (userChoice)
                 {
                     case "1":
-                        //AccountLookupWorkflow lookupWorkflow = new AccountLookupWorkflow();
-                        //lookupWorkflow.Execute();
+                        ListOrdersWorkflow listWorkflow = new ListOrdersWorkflow();
+                        listWorkflow.Execute();
                         break;
                     case "2":
                         //DepositWorkflow depositWorkflow = new DepositWorkflow();

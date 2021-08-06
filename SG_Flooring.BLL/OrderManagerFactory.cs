@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SG_Flooring.Data;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -16,9 +17,9 @@ namespace SG_Flooring.BLL
             switch (mode)
             {
                 case "TEST":
-                    return new OrderManager(new FreeAccountTestRepository());
+                    return new OrderManager(new TestRepo());
                 case "LIVE":
-                    return new OrderManager(new BasicAccountTestRepository());
+                    return new OrderManager(new LiveRepo());
                 default:
                     throw new Exception("Mode value in app config was invalid");
             }

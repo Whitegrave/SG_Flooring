@@ -13,5 +13,6 @@ namespace SG_Flooring.Models.Interfaces
         void SaveOrder(Order saveMe);
         void DeleteOrder(Order removeMe);
         CheckDateResponse CheckDate(string date);
+        CheckDateResponse CheckFileForDate(string date);
     }
 }
