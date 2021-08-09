@@ -9,7 +9,7 @@ namespace SG_Flooring.Models
     public class Order
     {
         public int Number { get; set; }
-        public string  Date { get; set; }
+        public string Date { get; set; }
         public string Customer { get; set; }
         public string State { get; set; }
         public string Product { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SG_Flooring.UI
 {
-    public class ConsoleIO
+    public static class ConsoleIO
     {
         public static int GetIntFromUser(string prompt, bool allowZero = true, bool allowNegative = true, int maxNegative = -100, int maxPositive = 100, bool ClearLog = false)
         {

@@ -9,9 +9,9 @@ namespace SG_Flooring.Models.Interfaces
 {
     public interface IOrderRepo
     {
-        Order GetOrder(string orderDate, int orderNumber);
-        void SaveOrder(Order saveMe);
-        void DeleteOrder(Order removeMe);
+        Order GetOrderFromFile(string orderDate, int orderNumber);
+        Response SaveOrderToFile(Order saveMe);
+        void DeleteOrderFromFile(Order removeMe);
         CheckDateResponse CheckDate(string date);
         CheckDateResponse CheckFileForDate(string date);
     }

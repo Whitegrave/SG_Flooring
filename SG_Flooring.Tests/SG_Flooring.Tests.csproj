@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LiveRepoTests.cs" />
     <Compile Include="MethodTests.cs" />
     <Compile Include="TestRepoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

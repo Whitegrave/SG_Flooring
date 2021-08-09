@@ -1,4 +1,5 @@
-﻿using SG_Flooring.Models.Interfaces;
+﻿using SG_Flooring.Models;
+using SG_Flooring.Models.Interfaces;
 using SG_Flooring.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace SG_Flooring.BLL
             GetOrderResponse response = new GetOrderResponse();
 
             // Check if order provided exists in file
-            response.Order = _orderRepository.GetOrder(orderDate, orderNumber);
+            response.Order = _orderRepository.GetOrderFromFile(orderDate, orderNumber);
 
             if (response.Order == null)
             {
@@ -45,8 +46,15 @@ namespace SG_Flooring.BLL
             return _orderRepository.CheckDate(orderDate);
         }
 
-        //public AccountDepositResponse Deposit(string accountNumber, decimal amount)
+        public Response SaveOrder(Order saveMe)
+        {
+            // Attempt to save, return result
+            return _orderRepository.SaveOrderToFile(saveMe);
+        }
 
-        //public AccountWithdrawResponse Withdraw(string accountNumber, decimal amount)
+        public void DeleteOrder(Order removeMe)
+        {
+            _orderRepository.DeleteOrderFromFile(removeMe);
+        }
     }
 }

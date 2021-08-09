@@ -13,13 +13,21 @@ namespace SG_Flooring.Data
 {
     public class LiveRepo : IOrderRepo
     {
-        public void DeleteOrder(Order removeMe)
+        public void DeleteOrderFromFile(Order removeMe)
         {
-            throw new NotImplementedException();
+            // Find and remove matching Order
+            List<Order> orders = GetOrdersFromFile(removeMe.Date);
+            foreach (Order item in orders)
+            {
+                if (item.Number == removeMe.Number)
+                    orders.Remove(item);
+            }
+            // Rebuild file
+            WriteOrdersToFile(removeMe.Date, orders);
         }
 
-        public Order GetOrder(string OrderDate, int OrderNumber)
-        {
+        public Order GetOrderFromFile(string OrderDate, int OrderNumber)
+        {            
             // Populate order list for given date
             List<Order> orders = GetOrdersFromFile(OrderDate);
 
@@ -35,9 +43,75 @@ namespace SG_Flooring.Data
 
         }
 
-        public void SaveOrder(Order saveMe)
+        public Response SaveOrderToFile(Order saveMe)
         {
-            throw new NotImplementedException();
+            Response savedOrderSuccess = new Response();
+            // Check if a file exists for this date
+            Response fileExists = CheckFileForDate(saveMe.Date);
+            List<Order> ordersToSave = new List<Order>();
+            // If not found, create one
+            if (!fileExists.Success)
+            {
+                File.Create(@".\" + saveMe.Date.Replace("/", "") + ".txt");
+            }
+            else
+            // If file was found, populate list from file
+            {
+                ordersToSave = GetOrdersFromFile(saveMe.Date);
+            }
+
+            // If order number is 0, it's a new order, so find next open order index
+            int orderNumberToSave = saveMe.Number;
+            if (orderNumberToSave == 0)
+            {
+                int nextOrderNumber = 0;
+                int listCount = ordersToSave.Count();
+
+                while (nextOrderNumber < ordersToSave.Count)
+                {
+                    nextOrderNumber++;
+                    bool indexAvailable = true;
+                    // Loop through each order in list until an open number is found
+                    foreach (Order item in ordersToSave)
+                    {
+                        if (item.Number == nextOrderNumber)
+                            indexAvailable = false;
+                    }
+                    if (indexAvailable)
+                    {
+                        // Add order to list as new with updated number
+                        saveMe.Number = nextOrderNumber;
+                        ordersToSave.Add(saveMe);
+                        break;
+                    }
+                    // On Error
+                    else
+                    {
+                        savedOrderSuccess.Success = false;
+                        savedOrderSuccess.Message = $"An index could not be generated for date {saveMe.Date} and number {saveMe.Number}";
+                        return savedOrderSuccess;
+                    }
+                }
+            }
+            // If Order Number was not 0, it's an existing order (update)
+            else
+            {
+                // Loop through and find matching order, update it
+                foreach (Order item in ordersToSave)
+                {
+                    if (item.Number == saveMe.Number)
+                    {
+                        ordersToSave[ordersToSave.IndexOf(item)] = saveMe;
+                        break;
+                    }
+                }
+            }
+
+            // Re-write file
+            WriteOrdersToFile(saveMe.Date, ordersToSave);
+            savedOrderSuccess.Success = true;
+            savedOrderSuccess.Message = $"Orders saved to date {saveMe.Date}";
+            return savedOrderSuccess;
         }
 
         public CheckDateResponse CheckDate(string date)
@@ -53,7 +127,16 @@ namespace SG_Flooring.Data
             {
                 response.Date = "invalid";
                 response.Success = false;
-                response.Message = "Date provided was not recognized. Use DD/MM/YYYY format.";
+                response.Message = "Date provided was not recognized. Use DD/MM/YYYY format. Press any key to continue...";
+                return response;
+            }
+
+            // Check if file exists for this date
+            if (!File.Exists(@".\Orders_" + date.Replace("/", "") + ".txt"))
+            {
+                response.Date = "invalid";
+                response.Success = false;
+                response.Message = "No orders exist for this date. Press any key to continue...";
                 return response;
             }
 
@@ -77,7 +160,7 @@ namespace SG_Flooring.Data
                 return validDateResponse;
 
             // Check for file with matching date parameter
-            if (!File.Exists(@".\" + validDateResponse.Date.ToString()))
+            if (!File.Exists(@".\" + validDateResponse.Date.ToString().Replace("/", "") + ".txt"))
             {
                 response.Date = "invalid";
                 response.Success = false;
@@ -137,6 +220,20 @@ namespace SG_Flooring.Data
                 orders.Add(x);
             }
             return orders.ToList();
+        }   
+
+        private void WriteOrdersToFile(string date, List<Order> list)
+        {
+            using (StreamWriter writer = File.CreateText(@".\" + date.Replace("/", "") + ".txt"))
+            {
+                // Header
+                writer.WriteLine("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
+                // Write each order as a concatenated, delimited line
+                foreach (Order item in list)
+                {
+                    writer.WriteLine(string.Join(",", item.Number, item.Customer, item.State, item.TaxRate, item.Product, item.Area, item.CostPSqf, item.LaborPSqf, item.MaterialCostPSqf, item.LaborTotal, item.TaxTotal, item.Total));
+                }
+            }
         }
     }
 }
