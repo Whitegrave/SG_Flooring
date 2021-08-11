@@ -12,12 +12,14 @@ namespace SG_Flooring.BLL
     public class OrderManager
     {
         private IOrderRepo _orderRepository;
+        private IStateRepo _stateRepo;
 
-        public OrderManager(IOrderRepo orderRepository)
+        public OrderManager(IOrderRepo orderRepository, IStateRepo stateRepo)
         {
             _orderRepository = orderRepository;
+            _stateRepo = stateRepo;
         }
-
+        
         public GetOrderResponse LookupOrder(string orderDate, int orderNumber)
         {
             GetOrderResponse response = new GetOrderResponse();
@@ -39,7 +41,7 @@ namespace SG_Flooring.BLL
             return response;
         }
 
-        // Passhtrough method to allow workflow to check date entry without reaching into repo/data
+        // Method to allow workflow to validate date entry without reaching into repo/data
         public CheckDateResponse ValidateDate(string orderDate)
         {
             CheckDateResponse response = new CheckDateResponse();

@@ -16,7 +16,7 @@ namespace SG_Flooring.Data
         // Populate product list from file
         private void LoadProducts()
         {
-            // Get account data
+            // Get order data
             string[] rows = File.ReadAllLines(_path);
             // Remove header row
             rows = rows.Skip(0).ToArray();

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SG_Flooring.Workflows
 {
-    class ListOrdersWorkflow
+    public class ListOrdersWorkflow
     {
         public void Execute()
         {

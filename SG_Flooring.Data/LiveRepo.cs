@@ -178,12 +178,12 @@ namespace SG_Flooring.Data
 
         private List<Order> GetOrdersFromFile(string date)
         {
-            // Get account data
+            // Get order data
             string[] rows = File.ReadAllLines(@".\Orders_" + date.Replace("/", "") + ".txt");
             // Remove header row
             rows = rows.Skip(0).ToArray();
 
-            // Create list for Accounts
+            // Create list for Orders
             List<Order> orders = new List<Order>();
 
             for (int i = 1; i < rows.Length; i++)

@@ -38,8 +38,8 @@ namespace SG_Flooring.UI
                         listWorkflow.Execute();
                         break;
                     case "2":
-                        //DepositWorkflow depositWorkflow = new DepositWorkflow();
-                        //depositWorkflow.Execute();
+                        AddOrderWorkflow addWorkflow = new AddOrderWorkflow();
+                        addWorkflow.Execute();
                         break;
                     case "3":
                         //WithdrawWorkflow withdrawWorkflow = new WithdrawWorkflow();
