@@ -10,7 +10,7 @@ namespace SG_Flooring.Data
 {
     public class TestStateRepo : IStateRepo
     {
-        private List<State> _states;
+        private List<State> _states = new List<State>();
 
         // Constructor to populate test data
         public TestStateRepo()
@@ -19,6 +19,11 @@ namespace SG_Flooring.Data
             _states.Add(new State { Initials = "PA", Name = "Pennsylvania", TaxRate = 6.75M });
             _states.Add(new State { Initials = "MI", Name = "Michigan", TaxRate = 5.75M });
             _states.Add(new State { Initials = "IN", Name = "Indiana", TaxRate = 6.00M });
+        }
+
+        public List<State> GetStates()
+        {
+            return _states;
         }
     }
 }

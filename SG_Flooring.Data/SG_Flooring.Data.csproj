@@ -45,6 +45,7 @@
     <Compile Include="ProductRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StateRepo.cs" />
+    <Compile Include="TestProductRepo.cs" />
     <Compile Include="TestRepo.cs" />
     <Compile Include="TestStateRepo.cs" />
   </ItemGroup>

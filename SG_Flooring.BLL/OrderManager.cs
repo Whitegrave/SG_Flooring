@@ -13,11 +13,13 @@ namespace SG_Flooring.BLL
     {
         private IOrderRepo _orderRepository;
         private IStateRepo _stateRepo;
+        private IProductRepo _prodRepo;
 
-        public OrderManager(IOrderRepo orderRepository, IStateRepo stateRepo)
+        public OrderManager(IOrderRepo orderRepository, IStateRepo stateRepo, IProductRepo prodRepo)
         {
             _orderRepository = orderRepository;
             _stateRepo = stateRepo;
+            _prodRepo = prodRepo;
         }
         
         public GetOrderResponse LookupOrder(string orderDate, int orderNumber)
@@ -57,6 +59,18 @@ namespace SG_Flooring.BLL
         public void DeleteOrder(Order removeMe)
         {
             _orderRepository.DeleteOrderFromFile(removeMe);
+        }
+
+        // Return State list for displaying to user
+        public List<State> GetStatesFromRepo()
+        {
+            return _stateRepo.GetStates();
+        }
+
+        // Return Product list for displaying to user
+        public List<Product> GetProductsFromRepo()
+        {
+            return _prodRepo.GetProducts();
         }
     }
 }

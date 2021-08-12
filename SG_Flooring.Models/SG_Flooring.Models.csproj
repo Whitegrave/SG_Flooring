@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IOrderRepo.cs" />
+    <Compile Include="Interfaces\IProductRepo.cs" />
     <Compile Include="Interfaces\IStateRepo.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Product.cs" />

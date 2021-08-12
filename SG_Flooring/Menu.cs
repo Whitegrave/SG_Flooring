@@ -14,9 +14,8 @@ namespace SG_Flooring.UI
 
         public static void Start()
         {
-            // Instantiate and initialize product database
+            // Instantiate product database
             ProductRepo ProdRepo = new ProductRepo();
-            ProdRepo.InitializeProductRepo();
 
             while (true)
             {

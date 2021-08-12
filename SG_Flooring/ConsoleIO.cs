@@ -121,12 +121,21 @@ namespace SG_Flooring.UI
 
         public static void DisplayOrderDetails(Order order)
         {
-            Console.WriteLine("**************************************\n" +
-                             $"Order: {order.Number}" + " | " + $"{order.Date}\n" +
+            Console.Write("**************************************\n");
+            if (order.Number == 0)
+            {
+                Console.Write($"Order: TBD");
+            }
+            else
+            {
+                Console.Write($"Order: {order.Number}");
+            }
+            Console.WriteLine(" | " + $"{order.Date}\n" +
                              $"Customer: {order.Customer}\n" +
                              $"State: {order.State}\n" +
                              $"Product: {order.Product}\n" +
-                             $"Material Cost: ${order.MaterialCostPSqf}\n" +
+                             $"Area: { order.Area}\n" +
+                             $"Material Cost: ${order.MaterialCostTotal}\n" +
                              $"Labor Cost: ${order.LaborTotal}\n" +
                              $"Tax Total: ${order.TaxTotal}\n" +
                              $"Total: ${order.Total}\n" +

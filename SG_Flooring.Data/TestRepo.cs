@@ -25,7 +25,7 @@ namespace SG_Flooring.Data
                 Product = "Wood",
                 CostPSqf = 1.00M,
                 LaborPSqf = 1.00M,
-                MaterialCostPSqf = 1.00M,
+                MaterialCostTotal = 1.00M,
                 Area = 100.00M,
                 LaborTotal = 100.00M,
                 TaxRate = 0.10M,
@@ -41,7 +41,7 @@ namespace SG_Flooring.Data
                 Product = "Wood",
                 CostPSqf = 2.00M,
                 LaborPSqf = 2.00M,
-                MaterialCostPSqf = 2.00M,
+                MaterialCostTotal = 2.00M,
                 Area = 200.00M,
                 LaborTotal = 200.00M,
                 TaxRate = 0.20M,
@@ -57,7 +57,7 @@ namespace SG_Flooring.Data
                 Product = "Wood",
                 CostPSqf = 3.00M,
                 LaborPSqf = 3.00M,
-                MaterialCostPSqf = 3.00M,
+                MaterialCostTotal = 3.00M,
                 Area = 300.00M,
                 LaborTotal = 300.00M,
                 TaxRate = 0.30M,
@@ -154,5 +154,6 @@ namespace SG_Flooring.Data
             }
             return response;
         }
+
     }
 }

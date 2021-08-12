@@ -15,7 +15,7 @@ namespace SG_Flooring.Models
         public string Product { get; set; }
         public decimal CostPSqf { get; set; }
         public decimal LaborPSqf { get; set; }
-        public decimal MaterialCostPSqf { get; set; }
+        public decimal MaterialCostTotal { get; set; }
         public decimal Area { get; set; }
         public decimal LaborTotal { get; set; }
         public decimal TaxRate { get; set; }

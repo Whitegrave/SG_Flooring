@@ -12,6 +12,8 @@ namespace SG_Flooring.Data
     public class StateRepo : IStateRepo
     {
         private List<State> _states = new List<State>();
+
+        // Constructor populates state list
         public StateRepo()
         {
             // Attempt to find and load states file
@@ -19,9 +21,9 @@ namespace SG_Flooring.Data
             {
                 string[] rows = File.ReadAllLines(@".\Taxes.txt");
                 // Remove header row
-                rows = rows.Skip(0).ToArray();
+                rows = rows.Skip(1).ToArray();
 
-                for (int i = 1; i < rows.Length; i++)
+                for (int i = 0; i < rows.Length; i++)
                 {
                     // Parse delimited lines into items
                     string[] fields = rows[i].Split(',');
@@ -40,7 +42,13 @@ namespace SG_Flooring.Data
                 Console.WriteLine("An error was encountered parsing state and tax file data: \n");
                 Console.WriteLine(String.Concat(e.Message, e.StackTrace));
                 _states = null;
+                Console.ReadKey();
             }
+        }
+
+        public List<State> GetStates()
+        {
+            return _states;
         }
     }
 }

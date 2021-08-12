@@ -10,7 +10,7 @@ namespace SG_Flooring.Models
     {
         public string Name { get; set; }
         public decimal CostSqf { get; set; }
-        public decimal CostLabor { get; set; }
+        public decimal CostLaborSqf { get; set; }
 
     }
 }

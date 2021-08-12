@@ -17,9 +17,9 @@ namespace SG_Flooring.BLL
             switch (mode)
             {
                 case "TEST":
-                    return new OrderManager(new TestRepo(), new TestStateRepo());
+                    return new OrderManager(new TestRepo(), new TestStateRepo(), new TestProductRepo());
                 case "LIVE":
-                    return new OrderManager(new LiveRepo(), new StateRepo());
+                    return new OrderManager(new LiveRepo(), new StateRepo(), new ProductRepo());
                 default:
                     throw new Exception("Mode value in app config was invalid");
             }

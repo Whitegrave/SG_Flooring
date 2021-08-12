@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SG_Flooring.Models.Interfaces
 {
-    public interface IStateRepo
+    public interface IProductRepo
     {
-        List<State> GetStates();
+        List<Product> GetProducts();
     }
 }

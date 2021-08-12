@@ -35,7 +35,11 @@ namespace SG_Flooring.Data
             foreach (Order x in orders)
             {
                 if (x.Number == OrderNumber)
+                {
+                    // Append date since it is not stored in the file
+                    x.Date = OrderDate;
                     return x;
+                }
             }
 
             // No match found
@@ -49,33 +53,29 @@ namespace SG_Flooring.Data
             // Check if a file exists for this date
             Response fileExists = CheckFileForDate(saveMe.Date);
             List<Order> ordersToSave = new List<Order>();
-            // If not found, create one
-            if (!fileExists.Success)
-            {
-                File.Create(@".\" + saveMe.Date.Replace("/", "") + ".txt");
-            }
-            else
             // If file was found, populate list from file
+            if (fileExists.Success)
             {
                 ordersToSave = GetOrdersFromFile(saveMe.Date);
             }
 
             // If order number is 0, it's a new order, so find next open order index
             int orderNumberToSave = saveMe.Number;
+            bool indexAvailable = true;
             if (orderNumberToSave == 0)
             {
-                int nextOrderNumber = 0;
-                int listCount = ordersToSave.Count();
-
-                while (nextOrderNumber < ordersToSave.Count)
+                int nextOrderNumber = 0;               
+                while (nextOrderNumber <= ordersToSave.Count)
                 {
                     nextOrderNumber++;
-                    bool indexAvailable = true;
+                    indexAvailable = true;
                     // Loop through each order in list until an open number is found
                     foreach (Order item in ordersToSave)
                     {
-                        if (item.Number == nextOrderNumber)
+                        if (item.Number == nextOrderNumber)                           
                             indexAvailable = false;
+
+                        Console.WriteLine($"{nextOrderNumber}");
                     }
                     if (indexAvailable)
                     {
@@ -83,13 +83,6 @@ namespace SG_Flooring.Data
                         saveMe.Number = nextOrderNumber;
                         ordersToSave.Add(saveMe);
                         break;
-                    }
-                    // On Error
-                    else
-                    {
-                        savedOrderSuccess.Success = false;
-                        savedOrderSuccess.Message = $"An index could not be generated for date {saveMe.Date} and number {saveMe.Number}";
-                        return savedOrderSuccess;
                     }
                 }
             }
@@ -105,6 +98,14 @@ namespace SG_Flooring.Data
                         break;
                     }
                 }
+            }
+
+            // Error for when a new order was sent but a valid index could not be found
+            if (!indexAvailable)
+            {
+                savedOrderSuccess.Success = false;
+                savedOrderSuccess.Message = $"An index could not be generated for date {saveMe.Date} and number {saveMe.Number}";
+                return savedOrderSuccess;
             }
 
             // Re-write file
@@ -129,16 +130,7 @@ namespace SG_Flooring.Data
                 response.Success = false;
                 response.Message = "Date provided was not recognized. Use DD/MM/YYYY format. Press any key to continue...";
                 return response;
-            }
-
-            // Check if file exists for this date
-            if (!File.Exists(@".\Orders_" + date.Replace("/", "") + ".txt"))
-            {
-                response.Date = "invalid";
-                response.Success = false;
-                response.Message = "No orders exist for this date. Press any key to continue...";
-                return response;
-            }
+            }           
 
             // Date provided was valid. Convert string to consistent format, store
             response.Date = dateOut.ToString("MM/dd/yyyy");
@@ -160,7 +152,7 @@ namespace SG_Flooring.Data
                 return validDateResponse;
 
             // Check for file with matching date parameter
-            if (!File.Exists(@".\" + validDateResponse.Date.ToString().Replace("/", "") + ".txt"))
+            if (!File.Exists(@".\Orders_" + validDateResponse.Date.ToString().Replace("/", "") + ".txt"))
             {
                 response.Date = "invalid";
                 response.Success = false;
@@ -181,12 +173,12 @@ namespace SG_Flooring.Data
             // Get order data
             string[] rows = File.ReadAllLines(@".\Orders_" + date.Replace("/", "") + ".txt");
             // Remove header row
-            rows = rows.Skip(0).ToArray();
+            rows = rows.Skip(1).ToArray();
 
             // Create list for Orders
             List<Order> orders = new List<Order>();
 
-            for (int i = 1; i < rows.Length; i++)
+            for (int i = 0; i < rows.Length; i++)
             {
                 // Parse delimited lines into items
                 string[] fields = rows[i].Split(',');
@@ -194,7 +186,7 @@ namespace SG_Flooring.Data
 
                 // Populate Order fields
                 try
-                {
+                {                  
                     x.Number = int.Parse(fields[0]);
                     x.Customer = fields[1];
                     x.State = fields[2];
@@ -203,7 +195,7 @@ namespace SG_Flooring.Data
                     x.Area = decimal.Parse(fields[5]);
                     x.CostPSqf = decimal.Parse(fields[6]);
                     x.LaborPSqf = decimal.Parse(fields[7]);
-                    x.MaterialCostPSqf = decimal.Parse(fields[8]);
+                    x.MaterialCostTotal = decimal.Parse(fields[8]);
                     x.LaborTotal = decimal.Parse(fields[9]);
                     x.TaxTotal = decimal.Parse(fields[10]);
                     x.Total = decimal.Parse(fields[11]);
@@ -212,8 +204,7 @@ namespace SG_Flooring.Data
                 {
                     Console.WriteLine("An error was encountered parsing order file data: \n");
                     Console.WriteLine(String.Concat(e.Message, e.StackTrace));
-                    Console.WriteLine("\n\n The repository was reset to default values.");
-                    //CreateLiveRepo();
+                    Console.ReadKey();
                 }
 
                 // Add Order to list
@@ -224,14 +215,18 @@ namespace SG_Flooring.Data
 
         private void WriteOrdersToFile(string date, List<Order> list)
         {
-            using (StreamWriter writer = File.CreateText(@".\" + date.Replace("/", "") + ".txt"))
+            // Re-order list
+            list = list.OrderBy(x => x.Number).ToList();
+
+            // Write to file
+            using (StreamWriter writer = File.CreateText(@".\Orders_" + date.Replace("/", "") + ".txt"))
             {
                 // Header
                 writer.WriteLine("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
                 // Write each order as a concatenated, delimited line
                 foreach (Order item in list)
                 {
-                    writer.WriteLine(string.Join(",", item.Number, item.Customer, item.State, item.TaxRate, item.Product, item.Area, item.CostPSqf, item.LaborPSqf, item.MaterialCostPSqf, item.LaborTotal, item.TaxTotal, item.Total));
+                    writer.WriteLine(string.Join(",", item.Number, item.Customer, item.State, item.TaxRate, item.Product, item.Area, item.CostPSqf, item.LaborPSqf, item.MaterialCostTotal, item.LaborTotal, item.TaxTotal, item.Total));
                 }
             }
         }
