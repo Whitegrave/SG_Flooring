@@ -9,7 +9,7 @@ namespace SG_Flooring.UI
 {
     public static class ConsoleIO
     {
-        public static int GetIntFromUser(string prompt, bool allowZero = true, bool allowNegative = true, int maxNegative = -100, int maxPositive = 100, bool ClearLog = false)
+        public static int GetIntFromUser(string prompt, bool allowZero = true, bool allowNegative = true, int maxNegative = -100, int maxPositive = 100, bool ClearLog = false, bool allowEmptyString = false)
         {
             string userInput;
             int result;
@@ -22,6 +22,11 @@ namespace SG_Flooring.UI
                 // Display the prompt to inform user of desired input
                 Console.Write(prompt);
                 userInput = Console.ReadLine();
+
+                // Escape if allowed empty
+                if (allowEmptyString && userInput == "")
+                    return 0;
+
                 bool bParsed = int.TryParse(userInput, out result);
                 // Validate and proceed to next loop if invalid
                 if (!bParsed || !allowZero && result == 0 || !allowNegative && result < 0 || result < maxNegative || result > maxPositive)
@@ -35,7 +40,7 @@ namespace SG_Flooring.UI
             return result;
         }
 
-        public static decimal GetDecimalFromUser(string prompt, bool allowZero = true, bool allowNegative = true, int maxNegative = -100, int maxPositive = 100, bool ClearLog = false)
+        public static decimal GetDecimalFromUser(string prompt, bool allowZero = true, bool allowNegative = true, int maxNegative = -100, int maxPositive = 100, bool ClearLog = false, bool allowEmptyString = false)
         {
             string userInput;
             decimal result;
@@ -48,6 +53,11 @@ namespace SG_Flooring.UI
                 // Display the prompt to inform user of desired input
                 Console.Write(prompt);
                 userInput = Console.ReadLine();
+
+                // Escape if allowed empty
+                if (allowEmptyString && userInput == "")
+                    return 0.0M;
+
                 bool bParsed = decimal.TryParse(userInput, out result);
                 // Validate and proceed to next loop if invalid
                 if (!bParsed || !allowZero && result == 0 || !allowNegative && result < 0 || result < maxNegative || result > maxPositive)

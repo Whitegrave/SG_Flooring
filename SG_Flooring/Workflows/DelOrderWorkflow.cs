@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SG_Flooring.Workflows
 {
-    public class ListOrdersWorkflow
+    public class DelOrderWorkflow
     {
         public void Execute()
         {
@@ -22,7 +22,7 @@ namespace SG_Flooring.Workflows
             while (!dateResponse.Success)
             {
                 userInput = ConsoleIO.GetStringFromUser("-----------------------------\n" +
-                                                                   "Lookup an Order\n" +
+                                                                   "Remove an Order\n" +
                                                                    "-----------------------------\n\n" +
                                                                    "Q to return to main menu\n" +
                                                                    "Enter Date in format ##/##/####:\n", 1, 10, false, false, true, true, false, false, true).ToUpper();
@@ -69,7 +69,16 @@ namespace SG_Flooring.Workflows
                 }
             }
             ConsoleIO.DisplayOrderDetails(orderResponse.Order);
-            ConsoleIO.DisplayToUser("\nPress any key to return to menu...", true);
+
+            // Confirm to delete
+            string confirmOrder = ConsoleIO.GetStringFromUser("\n\nRemove this order? Y to confirm, any other key to quit...", 1, 1, false, true, true, true, false, false, false).ToUpper();
+
+            // Abort if not confirmed
+            if (confirmOrder != "Y")
+                return;
+
+            manager.DeleteOrder(orderResponse.Order);
+            ConsoleIO.DisplayToUser("The order was removed.", true);
         }
     }
 }

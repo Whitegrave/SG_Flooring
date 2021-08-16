@@ -20,7 +20,10 @@ namespace SG_Flooring.Data
             foreach (Order item in orders)
             {
                 if (item.Number == removeMe.Number)
+                {
                     orders.Remove(item);
+                    break;
+                }
             }
             // Rebuild file
             WriteOrdersToFile(removeMe.Date, orders);

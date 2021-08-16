@@ -81,7 +81,7 @@ namespace SG_Flooring.Workflows
 
             // Write to file
             manager.SaveOrder(newOrder);
-
+            ConsoleIO.DisplayToUser("The order was saved.", true);
         }
     }
 }

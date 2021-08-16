@@ -25,7 +25,6 @@ namespace SG_Flooring.UI
                                                                 "2. Add an Order\n" +
                                                                 "3. Edit an Order\n" +
                                                                 "4. Remove an Order\n\n" +
-                                                                "R to re-create file repository from default values\n\n" +
                                                                 "Q to quit\n" +
                                                                 "----------------------------\n\n" +
                                                                 "Enter selection: ", 1, 1, false, false, true, false, false, false, true).ToUpper();
@@ -41,16 +40,12 @@ namespace SG_Flooring.UI
                         addWorkflow.Execute();
                         break;
                     case "3":
-                        //WithdrawWorkflow withdrawWorkflow = new WithdrawWorkflow();
-                        //withdrawWorkflow.Execute();
+                        EditOrderWorkflow editWorkflow = new EditOrderWorkflow();
+                        editWorkflow.Execute();
                         break;
                     case "4":
-                        //WithdrawWorkflow withdrawWorkflow = new WithdrawWorkflow();
-                        //withdrawWorkflow.Execute();
-                        break;
-                    case "R":
-                        //FileAccountRepository.CreateLiveRepo();
-                        //ConsoleIO.DisplayToUser("\nRepository reset. Press any key to continue...", true, true);
+                        DelOrderWorkflow delWorkflow = new DelOrderWorkflow();
+                        delWorkflow.Execute();
                         break;
                     case "Q":
                         return;
